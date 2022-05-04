@@ -63,6 +63,7 @@ stages:
 
     - download: current
       artifact: Templates
+      
 
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
@@ -73,7 +74,7 @@ stages:
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: 'Templates/windows-webapp-template.json'
+        csmFile: '$(**Pipeline.Workspace**)/Templates/windows-webapp-template.json'
         overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku "$(SKU)"'
         deploymentMode: 'Incremental'
 
@@ -99,7 +100,7 @@ stages:
               azureSubscription: 'azure-sre-rg'
               appType: 'webApp'
               WebAppName: '$(AZURE_WEBAPP_NAME)'
-              packageForLinux: 'Website/*.zip'
+              packageForLinux: '$(**Pipeline.Workspace**)/Website/*.zip'
 
 - stage: Functional_Tests
   dependsOn:  Publish_Website_to_WebApp
