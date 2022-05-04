@@ -62,8 +62,12 @@ stages:
 
     - download: current
       artifact: Templates
+
+    - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        azureSubscription: 'azure-sre-rg'
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'azure-sre-rg'
+        subscriptionId: '16169bdf-109c-4eb7-9963-3d01e2352774'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
