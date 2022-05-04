@@ -63,8 +63,7 @@ stages:
 
     - download: current
       artifact: Templates
-      
-
+    
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         deploymentScope: 'Resource Group'
@@ -74,7 +73,7 @@ stages:
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: '**/windows-webapp-template.json'
+        csmFile: '**/*.json'
         overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku "$(SKU)"'
         deploymentMode: 'Incremental'
 
