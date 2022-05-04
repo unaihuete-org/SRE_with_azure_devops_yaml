@@ -73,7 +73,7 @@ stages:
         location: 'West Europe'
         templateLocation: 'Linked artifact'
         csmFile: 'ArmTemplates/windows-webapp-template.json'
-        overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku $(SKU)'
+        overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku "$(SKU)"'
         deploymentMode: 'Incremental'
 
 - stage: Publish_Website_to_WebApp
