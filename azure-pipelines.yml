@@ -99,7 +99,7 @@ stages:
               azureSubscription: 'azure-sre-rg'
               appType: 'webApp'
               WebAppName: '$(AZURE_WEBAPP_NAME)'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              packageForLinux: 'Website/*.zip'
 
 - stage: Functional_Tests
   dependsOn:  Publish_Website_to_WebApp
@@ -119,5 +119,5 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'test'
-          projects: 'Application\aspnet-core-dotnet-core.FunctionalTests'
+          projects: '$(System.DefaultWorkingDirectory)/Application/aspnet-core-dotnet-core.FunctionalTests'
           arguments: '-s functionalTests.runsettings'
