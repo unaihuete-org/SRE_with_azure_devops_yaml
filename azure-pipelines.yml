@@ -68,7 +68,7 @@ stages:
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'azure-sre-rg'
-        subscriptionId: '16169bdf-109c-4eb7-9963-3d01e2352774'
+        subscriptionId: 'YOUR-SUBSCRIPTION'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
