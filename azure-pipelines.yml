@@ -126,4 +126,4 @@ stages:
       inputs:
         command: 'test'
         projects: '$(System.DefaultWorkingDirectory)/Application/aspnet-core-dotnet-core.FunctionalTests'
-        arguments: '-s $(System.DefaultWorkingDirectory)/Application/functionalTests.runsettings'
+        arguments: '-s $(System.DefaultWorkingDirectory)/Application/aspnet-core-dotnet-core.FunctionalTests/functionalTests.runsettings'
