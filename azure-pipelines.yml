@@ -4,13 +4,14 @@ trigger:
 variables:
 - name: buildConfiguration
   value: Release
+- group: WebApp-conf
   
 stages:
 - stage: Build
   jobs:
   - job: Build 
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: 'windows-latest'
     steps:
     - task: DotNetCoreCLI@2
       displayName: Restore
@@ -67,8 +68,8 @@ stages:
         azureSubscription: 'VMyaml - Azure'
         resourceGroupName: 'vmyaml-rg'
         location: 'West Europe'
-        csmFile: 'ArmTemplates/windows-vm-template.json'
-        overrideParameters: '--parameters webAppName="${{ env.AZURE_WEBAPP_NAME }}" hostingPlanName="${{ env.HOSTINGPLANNAME }}" appInsightsLocation="${{ env.APPINSIGHTLOCATION }}" sku="${{ env.SKU }}'
+        csmFile: 'ArmTemplates/windows-webapp-template.json'
+        overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku $(SKU)'
 
 - stage: Publish_Website_to_WebApp
   dependsOn: Release_Infrastructure_to_Azure
@@ -85,4 +86,31 @@ stages:
           - download: current
             artifact: Website
 
-     
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'azure-sre-rg'
+              appType: 'webApp'
+              WebAppName: '$(AZURE_WEBAPP_NAME)'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
+- stage: Functional-Tests
+  dependsOn:  Publish_Website_to_WebApp
+  jobs:
+  - job: Functional-Tests
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            cd Application\aspnet-core-dotnet-core.FunctionalTests
+            [xml]$runSetting = Get-Content functionalTests.runsettings
+            $runSetting.RunSettings.TestRunParameters.ChildNodes.Item(0).value = 'https://$(AZURE_WEBAPP_NAME).azurewebsites.net/'
+            $runSetting.Save("$(pwd)/functionalTests.runsettings")
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'test'
+          projects: 'Application\aspnet-core-dotnet-core.FunctionalTests'
+          arguments: '-s functionalTests.runsettings'
