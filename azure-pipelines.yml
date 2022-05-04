@@ -62,14 +62,15 @@ stages:
 
     - download: current
       artifact: Templates
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Azure Deployment:Create Or Update Resource Group action on vmyaml-rg'
-      inputs: 
-        azureSubscription: 'VMyaml - Azure'
-        resourceGroupName: 'vmyaml-rg'
+      inputs:
+        azureSubscription: 'azure-sre-rg'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
+        templateLocation: 'Linked artifact'
         csmFile: 'ArmTemplates/windows-webapp-template.json'
         overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku $(SKU)'
+        deploymentMode: 'Incremental'
 
 - stage: Publish_Website_to_WebApp
   dependsOn: Release_Infrastructure_to_Azure
