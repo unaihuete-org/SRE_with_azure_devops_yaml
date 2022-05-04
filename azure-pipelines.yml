@@ -73,7 +73,7 @@ stages:
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: '**/*.json'
+        csmFile: '$(Pipeline.Workspace)\**\*.json'
         overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku "$(SKU)"'
         deploymentMode: 'Incremental'
 
