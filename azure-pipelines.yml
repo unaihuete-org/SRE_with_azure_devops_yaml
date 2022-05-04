@@ -94,10 +94,10 @@ stages:
               WebAppName: '$(AZURE_WEBAPP_NAME)'
               packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
-- stage: Functional-Tests
+- stage: Functional_Tests
   dependsOn:  Publish_Website_to_WebApp
   jobs:
-  - job: Functional-Tests
+  - job: Functional_Tests
     pool:
       vmImage: 'windows-latest'
     steps:
