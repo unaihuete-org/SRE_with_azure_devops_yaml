@@ -73,7 +73,7 @@ stages:
         resourceGroupName: 'SREwithAzure-ADOYAML'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: 'ArmTemplates/windows-webapp-template.json'
+        csmFile: 'Templates/windows-webapp-template.json'
         overrideParameters: '-webAppName $(AZURE_WEBAPP_NAME) -hostingPlanName $(HOSTINGPLANNAME) -appInsightsLocation $(APPINSIGHTLOCATION) -sku "$(SKU)"'
         deploymentMode: 'Incremental'
 
