@@ -99,7 +99,7 @@ stages:
               azureSubscription: 'azure-sre-rg'
               appType: 'webApp'
               WebAppName: '$(AZURE_WEBAPP_NAME)'
-              packageForLinux: '$**/*.zip'
+              packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: Functional_Tests
   dependsOn:  Publish_Website_to_WebApp
